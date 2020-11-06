@@ -1,6 +1,6 @@
 #include "config.h"
 #include "MemoryInfo.h"
-
+#include "printInfo.h"
 
 MemoryInfo::MemoryInfo()
     :m_pid(-1)
@@ -19,13 +19,12 @@ MemoryInfo::~MemoryInfo()
     CloseProcessHandle();
 }
 
-
 // 分析内存信息 
 uint32_t MemoryInfo::AnalyzeMemoryInfo() 
 {
-    if (MemoryInfo::m_analyze)
+    if (IsAnalyzeMemory())
     {
-        return MemoryInfo::m_memlist.size();
+        return m_memlist.size();
     }
 
     if ( !GetProcessHandle() )
@@ -33,6 +32,7 @@ uint32_t MemoryInfo::AnalyzeMemoryInfo()
         return 0;
     }
 
+    printDebugA("Start Analyze Processs(%u) Memory\n", m_pid);
     // 分析 
     LPBYTE PageAddr = 0;
     while (TRUE)
@@ -49,6 +49,11 @@ uint32_t MemoryInfo::AnalyzeMemoryInfo()
         }
         else 
         {
+            printDebugA("Find memory block, base: 0x%p, size: 0x%08x, protect: %08x\n", 
+                membase.BaseAddress,
+                membase.RegionSize,
+                membase.Protect );
+
             if ( membase.Protect & PAGE_NOACCESS )
             {
                 PageAddr += membase.RegionSize;
@@ -82,38 +87,54 @@ uint32_t MemoryInfo::AnalyzeMemoryInfo()
                     searchmem.access = MEMORY_WRITEABLE|MEMORY_EXECUTEABLE;
                     break;
                 }
-                MemoryInfo::m_memlist.push_back(searchmem);
+                m_memlist.push_back(searchmem);
                 PageAddr += membase.RegionSize;
             }
         }
     }
 
-    MemoryInfo::m_analyze = true;
-    return 0;
+    SetAnalyzeMemory(true);
+    return m_memlist.size();
 }
 
-// 根据访问类型查询分析的内存 
-uint32_t MemoryInfo::SearchMemory(uint32_t access, std::vector<meminfo>& memlist)
+bool MemoryInfo::IsCurrentProcessMemory()
 {
-    return 0;
-}
-
-// 获取内存块信息 
-bool MemoryInfo::GetMemoryRangeInfo(void* addr, void** base, size_t* len, uint32_t access)
-{
-    return true;
+    if ( !GetProcessHandle() )
+    {
+        return false;
+    }
+    return IsSelfMemoryFlag();
 }
 
 // 读取内存数据 
 size_t MemoryInfo::ReadMemory(void* addr, void* buf, uint32_t ulsize)
 {
-    AnalyzeMemoryInfo();
-    return MemoryInfo::m_analyze;
+    if ( !GetProcessHandle() )
+    {
+        return 0;
+    }
+
+    SIZE_T lenth = 0;
+    if( ReadProcessMemory(m_hProcess, addr, buf, ulsize, &lenth) )
+    {
+        return lenth;
+    }
+    return 0;
 }
 
 // 写入内存数据 
-size_t MemoryInfo::WriteProcess(void* addr, void* buf, uint32_t ulsize)
+size_t MemoryInfo::WriteMemory(void* addr, void* buf, uint32_t ulsize)
 {
+    if ( !GetProcessHandle() )
+    {
+        return 0;
+    }
+
+    SIZE_T lenth = 0;
+    if( WriteProcessMemory(m_hProcess, addr, buf, ulsize, &lenth) )
+    {
+        return lenth;
+    }
     return 0;
 }
 
@@ -128,6 +149,15 @@ bool MemoryInfo::GetProcessHandle()
     if (m_pid == -1)
     {
         m_pid = GetCurrentProcessId();
+    }
+
+    if (m_pid == GetCurrentProcessId())
+    {
+        SetSelfMemoryFlag(true);
+    }
+    else
+    {
+        SetSelfMemoryFlag(false);
     }
     m_hProcess = OpenProcess(
         PROCESS_VM_READ|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION, 
@@ -146,6 +176,6 @@ void MemoryInfo::CloseProcessHandle()
 {
     DeleteHandle(m_hProcess);
     m_hProcess = NULL;
-    MemoryInfo::m_memlist.clear();
-    MemoryInfo::m_analyze = false;
+    m_memlist.clear();
+    SetAnalyzeMemory(false);
 }

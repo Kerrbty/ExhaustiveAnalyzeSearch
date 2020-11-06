@@ -361,6 +361,14 @@
 					RelativePath=".\MemoryInfo.h"
 					>
 				</File>
+				<File
+					RelativePath=".\PEFileMemoryInfo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PEFileMemoryInfo.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="SearchBase"
@@ -375,6 +383,18 @@
 				</File>
 				<File
 					RelativePath=".\SearchBase.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="PELoader"
+				>
+				<File
+					RelativePath=".\LoadModel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\LoadModel.h"
 					>
 				</File>
 			</Filter>

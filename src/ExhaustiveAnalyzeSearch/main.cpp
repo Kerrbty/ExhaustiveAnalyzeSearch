@@ -2,12 +2,15 @@
 #include <lib_json/json/json.h>
 #include "printInfo.h"
 #include "MemoryInfo.h"
+#include "PEFileMemoryInfo.h"
 
 int main()
 {
 
+//     PEFileMemoryInfo curproc("D:\\Program Files (x86)\\WeChat\\WeChat.exe");
     MemoryInfo curproc;
-    curproc.ReadMemory(NULL, NULL, 0);
+    std::vector<meminfo> section;
+    curproc.SearchMemory(MEMORY_EXECUTEABLE|MEMORY_READABLE, section);
 //     HANDLE hFile = FileOpen(TEXT("Search.json"), GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING);
 //     if (hFile != INVALID_HANDLE_VALUE)
 //     {
