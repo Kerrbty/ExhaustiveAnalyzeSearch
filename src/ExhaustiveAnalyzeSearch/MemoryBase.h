@@ -80,6 +80,8 @@ public:
 
     virtual bool IsCurrentProcessMemory() = 0; // 分析的内存数据是本进程内的吗 
 
+    virtual void* GetRealAddr(void* addr, void** base) { return NULL; } // 获取对象真实的地址 
+
     // 远程进程需要读取回来再做处理 
     virtual size_t ReadMemory(void* addr, void* buf, uint32_t ulsize) { return 0; };  // 读取内存数据 
     virtual size_t WriteMemory(void* addr, void* buf, uint32_t ulsize) { return 0; };  // 写入内存数据 

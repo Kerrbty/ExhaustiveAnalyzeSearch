@@ -106,6 +106,7 @@ uint32_t PEFileMemoryInfo::AnalyzeMemoryInfo()
         peheader->FileHeader.SizeOfOptionalHeader ); 
 
     DWORD SectionNum = peheader->FileHeader.NumberOfSections; 
+    printf("================ enum all section ====================\n");
     for (DWORD i=0; i<SectionNum; i++) 
     {
         DWORD ulsize = SectionHeader[i].Misc.VirtualSize ;
@@ -143,3 +144,13 @@ uint32_t PEFileMemoryInfo::AnalyzeMemoryInfo()
     return m_memlist.size();
 }
 
+void* PEFileMemoryInfo::GetRealAddr(void* addr, void** base)
+{
+    PIMAGE_DOS_HEADER Header = (PIMAGE_DOS_HEADER)m_PEModule;
+    PIMAGE_NT_HEADERS peheader = 
+        (PIMAGE_NT_HEADERS)((DWORD)Header + Header->e_lfanew);
+    *base = (void*)peheader->OptionalHeader.ImageBase;
+
+
+    return (void*)((unsigned char*)addr - (unsigned char*)Header);
+}

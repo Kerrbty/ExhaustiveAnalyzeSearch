@@ -10,6 +10,7 @@ public:
     virtual ~PEFileMemoryInfo();
 
     virtual bool IsCurrentProcessMemory();  // 分析的内存数据是本进程内的吗 
+    virtual void* GetRealAddr(void* addr, void** base);
 
 protected:
     bool LoadFileSuccess();
