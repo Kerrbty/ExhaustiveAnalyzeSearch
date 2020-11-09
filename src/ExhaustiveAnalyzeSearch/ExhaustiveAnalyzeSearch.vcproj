@@ -331,6 +331,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\JsonSearch.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\JsonSearch.h"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>

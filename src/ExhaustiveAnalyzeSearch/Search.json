@@ -1,0 +1,17 @@
+[
+	{
+		"name": "O_BP_Logout",
+		"page_type": "rx",
+		"offset": 0,
+		"search_byte": "C645.{4} 85C9 74.{2} 68.{8} 51 E8",
+		"continue":{
+			"offset": 9,
+			"compare_string": "Uninitialize login environment.",
+			"continue":{
+				"offset": -1,
+				"ret_addr": false
+			}
+		},
+		"index":0
+	}
+]

@@ -34,6 +34,11 @@ public:
     // 获取指定长度的数据 
     void* ReadDword(void* addr);
     void* ReadQword(void* addr);
+#ifdef _WIN64
+#define ReadAddr ReadQword
+#else
+#define ReadAddr ReadDword
+#endif
 
 protected:
     // 是否继续搜索下一个内容呢 

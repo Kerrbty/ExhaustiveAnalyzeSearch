@@ -8,7 +8,6 @@ MemorySearch::MemorySearch(uint32_t m_pid)
     ,m_init(false)
     ,m_select_target_memory(false)
     ,m_access(MEMORY_READABLE)
-    ,m_index(0)
     ,m_bPEMemory(false)
 {
     m_TargetMemory = new MemoryInfo(m_pid);
@@ -19,7 +18,6 @@ MemorySearch::MemorySearch(const char* filename)
     ,m_init(false)
     ,m_select_target_memory(false)
     ,m_access(MEMORY_READABLE)
-    ,m_index(0)
     ,m_bPEMemory(true)
 {
     m_TargetMemory = new PEFileMemoryInfo(filename);
@@ -30,7 +28,6 @@ MemorySearch::MemorySearch(const wchar_t* filename)
     ,m_init(false)
     ,m_select_target_memory(false)
     ,m_access(MEMORY_READABLE)
-    ,m_index(0)
     ,m_bPEMemory(true)
 {
     m_TargetMemory = new PEFileMemoryInfo(filename);
@@ -80,6 +77,19 @@ CMemoryInfo* MemorySearch::GetTargetMemoryObject()
     return m_TargetMemory;
 }
 
+bool MemorySearch::WhenFindCallBack(void* findaddr, PGetAddrSuccessCallBack callback, void* user_args)
+{
+    bool get_next = true;
+#ifdef _DEBUG
+    printDebugA("Search code at: %p\n", GetRealAddr(findaddr));
+#endif
+    if (callback!=NULL)
+    {
+        get_next = callback(findaddr, user_args);
+    }
+    return get_next;
+}
+
 unsigned int MemorySearch::SearchTargetBytes(const char* szbytes, PGetAddrSuccessCallBack callback, void* user_args)
 {
     unsigned int ncount = 0;
@@ -105,10 +115,9 @@ unsigned int MemorySearch::SearchTargetBytes(const char* szbytes, PGetAddrSucces
                         len);
                     if (findaddr)
                     {
-                        printDebugA("Search code at: %p\n", findaddr);
-                        if (ncount==m_index && callback!=NULL)
+                        if( !WhenFindCallBack(findaddr, callback, user_args) )
                         {
-                            callback(GetRealAddr(findaddr), user_args);
+                            break;
                         }
                         findaddr = (unsigned char*)findaddr + 1;
                         ncount++;
@@ -140,10 +149,9 @@ unsigned int MemorySearch::SearchTargetBytes(const unsigned char* szbytes, size_
                     len);
                 if (findaddr)
                 {
-                    printDebugA("Search code at: %p\n", findaddr);
-                    if (ncount==m_index && callback!=NULL)
+                    if( !WhenFindCallBack(findaddr, callback, user_args) )
                     {
-                        callback(GetRealAddr(findaddr), user_args);
+                        break;
                     }
                     findaddr = (unsigned char*)findaddr + 1;
                     ncount++;
@@ -172,10 +180,9 @@ unsigned int MemorySearch::SearchTargetString(const char* str, PGetAddrSuccessCa
                     str);
                 if (findaddr)
                 {
-                    printDebugA("Search code at: %p\n", findaddr);
-                    if (ncount==m_index && callback!=NULL)
+                    if( !WhenFindCallBack(findaddr, callback, user_args) )
                     {
-                        callback(GetRealAddr(findaddr), user_args);
+                        break;
                     }
                     findaddr = (unsigned char*)findaddr + 1;
                     ncount++;
@@ -204,10 +211,9 @@ unsigned int MemorySearch::SearchTargetString(const wchar_t* str, PGetAddrSucces
                     str);
                 if (findaddr)
                 {
-                    printDebugA("Search code at: %p\n", findaddr);
-                    if (ncount==m_index && callback!=NULL)
+                    if( !WhenFindCallBack(findaddr, callback, user_args) )
                     {
-                        callback(GetRealAddr(findaddr), user_args);
+                        break;
                     }
                     findaddr = (unsigned char*)findaddr + 1;
                     ncount++;
