@@ -40,9 +40,6 @@ protected:
     bool IsSearchNext() { return m_search_next; }
     void SetSearchNext(bool search_continue) { m_search_next = search_continue; }
 
-#ifndef _DEBUG
-private:
-#endif
     // 只有该类内部使用，因为涉及到资源释放会引起内存泄漏 
     size_t BytesString2Bytes(const char* szbytes, unsigned char** bytes, unsigned char** masks); // 字符串转二进制 
     size_t BytesString2Bytes(const wchar_t* szbytes, unsigned char** bytes, unsigned char** masks); // 字符串转二进制 

@@ -232,7 +232,7 @@ size_t CSearchBase::BytesString2Bytes(const char* szbytes, unsigned char** bytes
         }
         else if ((*pByte|0x20)>='a' && (*pByte|0x20)<='f')
         {
-            (*bytes)[ipos/2] = ((*bytes)[ipos/2]<<4)| (*pByte - 'a' + 10);
+            (*bytes)[ipos/2] = ((*bytes)[ipos/2]<<4)| ((*pByte|0x20) - 'a' + 10);
             (*masks)[ipos/2] = ((*masks)[ipos/2]<<4)| 0xF;
             ipos++;
         }
@@ -320,7 +320,7 @@ size_t CSearchBase::BytesString2Bytes(const wchar_t* szbytes, unsigned char** by
         }
         else if ((*pByte|0x20)>=L'a' && (*pByte|0x20)<=L'f')
         {
-            (*bytes)[ipos/2] = ((*bytes)[ipos/2]<<4)| (*pByte - L'a' + 10);
+            (*bytes)[ipos/2] = ((*bytes)[ipos/2]<<4)| ((*pByte|0x20) - L'a' + 10);
             (*masks)[ipos/2] = ((*masks)[ipos/2]<<4)| 0xF;
             ipos++;
         }
