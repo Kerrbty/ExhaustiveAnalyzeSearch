@@ -1,32 +1,53 @@
 #include <defs.h>
 #include "JsonSearch.h"
+#include "PEVersionInfo.h"
 
 
-void __stdcall printaddr(void* addr, void* user_info)
+void __stdcall printaddr(const char* name, void* addr, void* user_info)
 {
-    printf("find success£º %p\n", addr);
+    int n = 0;
+    if (addr)
+    {
+        n = printf("\t{\"%s\",", name);
+    }
+    else
+    {
+        n = printf("\t{nullptr,", name);
+    }
+    for (int i=n; i<64; i++)
+    {
+        putchar(' ');
+    }
+    printf("0x%-8x},\n", addr);
 }
 
-
-int main()
+void AnalyzeFile(const char* filename, const char* rulefile)
 {
+    unsigned long dwVersionMS, dwVersionLS;
+    GetPEVersionA(filename, &dwVersionMS, &dwVersionLS);
+    printf("//%u.%u.%u.%u offset.h \n", 
+        HIWORD(dwVersionMS),
+        LOWORD(dwVersionMS),
+        HIWORD(dwVersionLS),
+        LOWORD(dwVersionLS)
+        );
+    printf("wxversion_table wx%u%u%u%u_table[] = { \n", 
+        HIWORD(dwVersionMS),
+        LOWORD(dwVersionMS),
+        HIWORD(dwVersionLS),
+        LOWORD(dwVersionLS)
+        );
+    SearchByJsonA(rulefile, filename, printaddr, NULL);
+    printaddr(NULL, 0, NULL);
+    printf("};\n");
+}
 
-//     PEFileMemoryInfo curproc("D:\\Program Files (x86)\\WeChat\\WeChat.exe");
-//     MemoryInfo curproc;
-//     std::vector<meminfo> section;
-//     curproc.SearchMemory(MEMORY_EXECUTEABLE|MEMORY_READABLE, section);
-
-    SearchByJsonA("Search.json", "D:\\Program Files (x86)\\WXWork3.0.31.3306\\WXWork.exe", printaddr, NULL);
-//     MemorySearch memsearch("D:\\Program Files (x86)\\WXWork3.0.31.3306\\WXWork.exe");
-//     memsearch.SearchTargetBytes("C645.{4} 85C9 74.{2} 68.{8} 51 E8.{8} 83C408", printaddr, &memsearch);
-
-//     MemorySearch memsearch("C:\\windows\\system32\\kernelbase.dll");
-//     memsearch.SearchTargetBytes("83E001 C744240C.{8} 89442404 85C9 74", printaddr, NULL);
-
-//     MemorySearch memsearch("D:\\Program Files (x86)\\WeChat\\WeChat.exe");
-//     std::vector<meminfo> section;
-//     memsearch.InitializeTargetMemory(MEMORY_EXECUTEABLE|MEMORY_READABLE, section);
-// 
+int main(int argc, char* argv[])
+{
+    for (int i=1; i<argc; i++)
+    {
+        AnalyzeFile(argv[i], "OffsetRule.json");
+    }
 
     return 0;
 }

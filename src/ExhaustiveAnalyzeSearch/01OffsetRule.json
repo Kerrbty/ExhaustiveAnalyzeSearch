@@ -1,0 +1,294 @@
+[
+    {
+        "name":"O_CALL_DBExec",
+        "type":"rva",
+        "pattern":"55 8B.{2} 6AFF 68.{8} 64A100000000 50 83EC.{2} A1.{8} 33C5 89.{4} 53 56 57 50 8D.{4} 64A300000000 89.{4} 8B.{4} 8D.{4} 8B.{4} 0F57C0 89.{4} 83C144 50 89.{4} C645.{4} C745.{10} 0F1145DC E8.{8} 8B.{4} 57 56 C645.{4} 8B.{2} 8B.{4} FF.{2} 8D.{4} 8845DB E8.{8} 8A45DB EB1D FF.{4} 8B.{4} FF.{4} E8.{8} B8.{8} C3 B8.{8} C3",
+        "index": 0
+    },
+    {
+        "name":"O_MEM_ServiceManagerImpl",
+        "type":"mem",
+        "pattern":"89 3d (.{8}) 89 35 .{8} e8 .{8}",
+        "index": 0
+    },
+    {
+        "name":"O_MEM_SelfUid",
+        "type":"mem",
+        "pattern":"89 0D (.{8}) A3 .{8} 56 C6 45 FC 05",
+        "index": 0
+    },
+    
+    {
+        "name":"O_CALL_GetCorpInfo",
+        "type":"rva",
+        "pattern":"558BEC6AFF68.{8}64A1000000005083EC4CA1.{8}33C58945F0535657508D45F464A3000000008BF18B4D0C8B5D08895DD0895DD48B018B51043BC27519",
+        "index": 0
+    },
+
+    {
+        "name":"O_CALL_GetLabelCustomer",
+        "type":"call",
+        "pattern":"8B.{2} 8D.{4} 52 C7.{12} 8B.{2} FF.{4} 8B.{2} 8D.{4} 50 8D.{4} C645.{4} 50 E8(.{8}) 8B.{4} 83.{4} 85F6 74.{2} 8B.{2}",
+        "index": 0
+    },
+
+    {
+        "name":"O_CALL_TransferMsg",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 81EC.{8} A1.{8} 33C5 8945F0 56 57 50 8D45F4 64A300000000 8B5508 B8.{8} 833D.{10} 8BCA 8B7D0C 0F4305.{8} 837A1410",
+        "index": 0
+    },
+    {
+        "name":"O_BP_StorageNewMsg",
+        "type":"rva",
+        "pattern":"C745FC00000000FF50248B078B0B8B008B318B80E00000009952506A08FF56208B078B0B8B008B11FF707C",
+        "index": 1
+    },
+    {
+        "name":"O_CALL_GetContactDetailInfo",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC08 53 56 57 A1.{8} 33C5 50 8D45F4 64A300000000 8B49F8 8D45EC 50 E8.{8} FF7510 8B7D08 FF750C 8B08 57 C745FC00000000 E8.{8} 8B75F0 85F6 7421 83CBFF 8BC3 F00FC14604",
+        "index": 2
+    },
+    {
+        "name":"O_CALL_GetExternalUserIds",
+        "type":"rva",
+        "pattern":"558BECFF75088B492CE8.{8}8B45085DC20400",
+        "index": 6
+    },
+    {
+        "name":"O_CALL_GetExternalUserInfo",
+        "type":"rva",
+        "pattern":"558BEC8B492C6A00FF750CFF7508E8.{8}8B45085DC20800",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_GetAllConversations",
+        "type":"rva",
+        "pattern":"55 8B.{2} 6AFF 68.{8} 64A100000000 50 83EC.{2} A1.{8} 33C5 89.{4} 53 56 57 50 8D.{4} 64A300000000 8B.{2} 8B.{4} 0F57C0 8B.{4} 33F6 660F.{6} 89.{4} C745.{10} 89.{4} C745.{10} 89.{4} C745.{10} 8B.{4} 89.{4} 85C9 74.{2} F0FF4104 8B.{4} 8B.{4} 8B.{4} 83CBFF 89.{4} 89.{4} 85F6 74.{2} 8B.{2} F00FC14604 75.{2} 8B.{2} 8B.{2} FF.{2} 8B.{2} F00FC14608 75.{2} 8B.{2} 8B.{2} FF.{4} FF.{4} 8D.{4} 57 E8.{8} 8B.{4} C745.{10} 85F6 74.{2} 8B.{2} F00FC14604 75.{2} 8B.{2} 8B.{2} FF.{2} F00FC15E08 4B 75.{2} 8B.{2} 8B.{2} FF.{4} 8B.{2} 8B.{4} 64890D00000000 59 5F 5E 5B 8B.{4} 33CD E8.{8} 8B.{2} 5D C20800",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_QueryCorpMemberList",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC14 A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 8BC1 8B7D08 0F57C0 8B4D0C 33F6 660FD645E4 897DE0 C745EC00000000 894DE0 C745E800000000 8975EC C745E4.{8} 8B48FC 8975FC 85C9 740A",
+        "index": 1
+    },
+    {
+        "name":"O_CALL_GetAllCorpanyIds",
+        "type":"rva",
+        "pattern":"558BECFF75088B492CE8.{8}8B45085DC20400",
+        "index": 4
+    },
+    {
+        "name":"O_CALL_GetCorpCustomerLabel",
+        "type":"rva",
+        "pattern":"558BEC6AFF68.{8}64A1000000005083EC1C5657A1.{8}33C5508D45F464A3000000008BF18B7D088D4DDC6A1068.{8}897DD8C745EC00000000C745F00F000000C645DC00E8.{8}8D45DCC745FC0000000050578BCEE8.{8}8B55F083FA10722E8B4DDC428BC181FA0010000072168B49FC83C2232BC183C0FC83F81F7606",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_GetVidCustomerLabel",
+        "type":"rva",
+        "pattern":"558BEC6AFF68.{8}64A1000000005083EC1C5657A1.{8}33C5508D45F464A3000000008BF18B7D088D4DDC6A1068.{8}897DD8C745EC00000000C745F00F000000C645DC00E8.{8}8D45DCC745FC0000000050578BCEE8.{8}8B55F083FA10722E8B4DDC428BC181FA0010000072168B49FC83C2232BC183C0FC83F81F7606",
+        "index": 1
+    },
+    {
+        "name":"O_BP_Login",
+        "type":"rva",
+        "pattern":"68.{8}51E8.{8}8B45BC83C4088B481C85C97418837DA8108D4594FF75A40F4345945051E8.{8}83C40C",
+        "index": 0
+    },
+    {
+        "name":"O_BP_Logout",
+        "type":"rva",
+        "pattern":"68.{8} 51 E8.{8} 83C408 8B4F1C 85C9 7418 837DE010 8D45CC FF75DC 0F4345CC 50 51 E8.{8} 83C40C",
+        "index": 1
+    },
+    {
+        "name":"O_BP_FriendRequest",
+        "type":"rva",
+        "pattern":"8B7128 FF7604 FF36 E8.{8} 83C408 85C0 75.{2} 8B86B8000000 83E004 74.{2}",
+        "index": 0
+    },
+    {
+        "name":"O_BP_SyncExternalUserTask",
+        "type":"rva",
+        "pattern":"8B.{10} C645.{4} 85F6 74.{2} 83C8FF F00FC14604 75.{2} 8B.{2} 8B.{2} FF.{2} 83C8FF F00FC14608 75.{2} 8B.{2} 8B.{2} FF.{4} 8B.{2} E8.{8} 8D.{10} 51 8B.{2} E8.{8} 8B.{2} C645.{4} 8B.{4} 89.{10} 8D.{4} 56 89.{4} E8.{8}",
+        "index": 0
+    },
+    {
+        "name":"O_BP_UpdateAppActiveState",
+        "type":"rva",
+        "pattern":"C645.{4} 50 83C1F4 E8.{8} 8B.{4} 89.{4} 85C9 74.{2} 8B.{2} F00FC14104 75.{2} 8B.{2} FF.{2} 8B.{4} 8B.{2} F00FC14108 75.{2} 8B.{2} FF.{4} 8B.{4} 85C9 74.{2} 8B.{2} 8D.{4} 3BC8 0F95C0 0FB6C0 50 FF.{4} 85FF 74.{2} 8B.{2} F00FC14704 75.{2} 8B.{2} 8B.{2} FF.{2} F00FC17708 4E 75.{2} 8B.{2} 8B.{2} FF.{4} 8B.{4} 64890D00000000 59 5F 5E 8B.{4} 33CD E8.{8} 8B.{2} 5D C20400",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_AddLogicTask",
+        "type":"rva",
+        "pattern":"55 8BEC 53 56 8B7508 8D5904 57 53 8B0E E8.{8} 8B7D0C 837F2400 7413 E8.{8} 8B0E 8B00 83C004 50 57 E8.{8} 8B03 56 8B400C 8B4814 8B01 FF5004 5F 5E 5B 5D C20800",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_CreateAddConversationMembersTask",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 51 53 56 57 A1.{8} 33C5 50 8D45F4 64A300000000 68.{8} E8.{8} 8BF8 83C404 897DF0 C745FC00000000 85FF 0F84.{8} 68.{8} 8D7710 C7470401000000 6A00 56 C7470801000000 C707.{8} E8.{8} 83C40C 8BCE E8.{8} C706.{8} C7461000000000 C7461400000000 C7461800000000 C7461C00000000 C7462000000000 C7462800000000 C7462C00000000 C7464000000000 C746440F000000 C6463000 C7464800000000 C7464C00000000 C7465000000000 C7465400000000 C7465800000000 C7465C00000000 C7466000000000 C7467400000000 C746780F000000 C6466400 A1.{8} 898680000000 A1.{8} 898684000000 A1.{8} 898688000000 A1.{8} 89868C000000 C786A000000000000000 C786A40000000F000000 C6869000000000 C786B800000000000000 C786BC0000000F000000 C686A800000000 C686C000000000 C786C400000000000000 C786C800000000000000 C786CC00000000000000 EB02",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_DeleteConversationMembers",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC24 A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 894DD0 8B450C 0F57C0 8B7508 8945D8",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_CreateConversation",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC78 A1.{8} 33C5 8945F0 56 57 50 8D45F4 64A300000000 8BC1 8945C8 8B4D0C 83C0F8 8B7D08 50 897DCC 894DB8 E8.{8} 8B4F04 83C404 8B37 894DC4 2BCE C1F903 81F92C010000",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_DBBatchUpdateConversation",
+        "type":"rva",
+        "pattern":"55 8B.{2} 6AFF 68.{8} 64A100000000 50 81EC.{8} A1.{8} 33C5 89.{4} 53 56 57 50 8D.{4} 64A300000000 89.{10} 8B.{4} 0F57C0 660F.{6} C745.{10} 89.{4}",
+        "index": 1
+    },
+    {
+        "name":"O_BP_ConversationInfo",
+        "type":"rva",
+        "pattern":"C745.{10} E8.{8} 89.{4} 8B.{4} 8B.{2} C645.{4} 3BF7 74.{2} 8B.{4} 0F1F00 8B.{2} 51 3945C4 74.{2} 8B.{2} E8.{8} 8B.{4} 83C018 89.{4} EB0C 50 8D.{4} E8.{8} 8B.{4}",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_GetConversationMemListDetail",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC18 A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 8BF9 8B7510 8B5D08 8D4610 8B4D0C 895DE0 833800 894DE4 8945E0 755D C745E800000000 C745EC00000000 8B07 8D55E8 52 6A0B 51 53 8BCF C745FC00000000 FF5010 8B7DEC 85FF 0F84.{8} 83CEFF 8BC6 F00FC14704 0F85.{8} 8B07 8BCF FF10 F00FC17708",
+        "index": 0
+    },
+    {
+        "name":"O_BP_CustomerLabelChange",
+        "type":"rva",
+        "pattern":"8B80D0000000 FFD0 8B5DCC 8845D3 85DB 741F 8BCE F00FC14B04 7516 8B03 8BCB FF10 8BC6 F00FC14308 7507 8B03 8BCB FF5004",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_ModifyConversationNotice",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC1C A1.{8} 33C5 89.{4} 53 56 57 50 8D45F4 64A300000000 89.{4} 8B4514 0F57C0 8B7D0C 8B7508 89.{4} 8D45E8 50 660F.{6} E8.{8} 83C404 8B5DE8 C745.{10} 8D4B28 3BCE 7413 837E1410 8BC6 7202 8B06",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_NewMessageContentTextItem",
+        "type":"rva",
+        "pattern":"55 8BEC 51 6A34 E8.{8} 8BD0 83C404 89.{4} 85D2 743A C742.{10} C742.{10} C702.{8} C742.{10} C742.{10} C742.{10} C742.{10} C6421400 C6422C00",
+        "index": 0
+    },
+    {
+        "name":"O_MEM_MessageContentVFTable",
+        "type":"mem",
+        "pattern":"8D4E0C C746.{10} C746.{10} C706.{8} 89.{4} 8D4704 C701(.{8}) 50 83C104 C645FC01 E8.{8} EB02",
+        "index": 0
+    },
+    {
+        "name":"O_MEM_MessageContentVFTableRef",
+        "type":"mem",
+        "pattern":"8D4E0C C746.{10} C746.{10} C706(.{8}) 89.{4} 8D4704 C701.{8} 50 83C104 C645FC01 E8.{8} EB02",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_CreateOuterRoom",
+        "type":"rva",
+        "pattern":"55 8B.{2} 6AFF 68.{8} 64A100000000 50 83.{4} A1.{8} 33C5 89.{4} 53 56 57 50 8D.{4} 64A300000000 8B.{2} 8B.{4} 8D.{4} 0F.{4} 50 660F.{6} E8.{8} 83.{4} 8B.{4} 8B.{4} C7.{12} C7.{12} C640.{4} C7.{12} 85F6 74.{2} F0FF4604 89.{4} 89.{4} 53 8D.{4} C645.{4} 50 8D.{4} E8.{8} 8B.{4} 83.{4} C645.{4} 85FF 74.{2} 8B.{2} F00FC14704 75.{2} 8B.{2} 8B.{2} FF.{2} 8B.{2} F00FC14708 75.{2} 8B.{2} 8B.{2} FF.{4} 8B.{4} E8.{8} 89.{4} 8B.{2} 85F6 74.{2} 8B.{2} F00FC14E04 75.{2} 8B.{2} 8B.{2} FF.{2} F00FC15E08 4B 75.{2} 8B.{2} 8B.{2} FF.{4} 8B.{4} 8B.{2} 8B.{4} 64890D00000000 59 5F 5E 5B 8B.{4} 33CD E8.{8} 8B.{2} 5D C20400",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_ModifyConversationName",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC1C A1.{8} 33C5 89.{4} 53 56 57 50 8D45F4 64A300000000 89.{4} 8B4510 0F57C0 8B7508 8B5D0C 89.{4} 8D45E8 50 660F.{6} E8.{8} 83C404 8B5604 C745.{10} 85D2 74.{2} F0FF4204 8B5604 8B4DE8 83CFFF 8B06 89.{4} 8B7114 89.{4} 85F6 74.{2} 8BC7 F00FC14604 75.{2} 8B06 8BCE FF.{2} 8BC7 F00FC14608 75.{2} 8B06 8BCE FF.{4}",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_GetFriendsManagerImpl",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC08 53 56 57 A1.{8} 33C5 50 8D.{4} 64A300000000 8D.{4} 50 E8.{8} 83C404 8B08 8B.{4} 57 C7.{4}00000000 8B01 FF501C",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_SetVisitingCard",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC30 A1.{8} 33C5 89.{4} 53 56 57 50 8D.{4} 64A300000000 89.{4} 8B.{4} 8B.{4} 89.{4} 8B.{4} 89.{4} 8B.{4} 89.{4} 8B.{4} 89.{4} 8B.{4} 89.{4} 89.{4} 68C8000000",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_OperateExternalUserOrApply",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 81EC8C000000 A1.{8} 33C5 89.{4} 53 56 57 50 8D.{4} 64A300000000 89.{4} 8B.{4} 8B.{4} 8B.{4} 89.{4} 8B.{4} 89.{4} 89.{4} 89.{4} 8B15.{8} 8BCA",
+        "index": 0
+    },
+    {
+        "name":"O_BP_UpdateContactRemark",
+        "type":"rva",
+        "pattern":"FF.{2}D4000000 FF.{2}D0000000 6A07 FF.{2}20 8B.{2} 0F57C0 660FD645E4 C745EC00000000 8B00",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_SearchUserIds",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC1C A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 894DD8 8B4510 0F57C0 8B7508 8B7D0C 8945E4 8D45E8 50 660F1345E8 E8.{8} 83C404 8B5DE8 C745FC00000000 8D4B28 3BCE 7413 837E1410 8BC6 7202",
+        "index": 0
+    },
+    {
+        "name":"O_BP_SearchUserFromNetResult",
+        "type":"rva",
+        "pattern":"E8.{8} 8B4D90 C745FC0A000000 E8.{8} 8D4D88 51 8B08 E8.{8} 8B00 8D4DB4 51 C645FC0B 8B483C",
+        "index": 0
+    },
+    {
+        "name":"O_MEM_AddUserImpl",
+        "type":"mem",
+        "pattern":"8B853CFFFFFF 8985D0FEFFFF 8B8558FFFFFF 8985D4FEFFFF 8D85CCFEFFFF C785CCFEFFFF(.{8})",
+        "index": 0
+    },
+    {
+        "name":"O_MEM_AddUserServiceResultCallbackBridge",
+        "type":"mem",
+        "pattern":"8B13 8B7304 8A450B 8845C4  8D45BC C745BC(.{8}) C745C0",
+        "index": 0
+    },
+    {
+        "name":"O_BP_NetWorkCheck",
+        "type":"rva",
+        "pattern":"C745FC00000000 E8.{8} 8B75E4 85F6 741E 8BC7 F00FC14604 7515 8B06 8BCE FF10 F00FC17E08 4F 7507 8B06 8BCE FF5004 8B4DF4 64890D00000000 59 5F 5E 5B 8BE5 5D C20400",
+        "index": 1
+    },
+    {
+        "name":"O_CALL_AddNewContactLabel",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC1C A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 894DD8 8B450C 0F57C0 8B7508 8945E4 8D45E8 50 660F1345E8 E8.{8} 83C404 8B4E04 C745FC00000000 85C9 7407 F0FF4104 8B4E04 8B5DE8",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_DeleteContactLabel",
+        "descript":" delete existing label ",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC14 A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 8BF9 8B5D10 8D45E8 0F57C0 50 660F1345E8 E8.{8} 83C404 8B4DE8 8B4508 8B75EC C745FC00000000 894130 8B450C 894134 C7412802000000 C745E000000000",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_SetContactLabels",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 81ECE0000000 A1.{8} 33C5 8945F0 56 57 50 8D45F4 64A300000000 8B4508 C7458800000000 8B4958 89855CFFFFFF 85C9 0F84040C0000 8B4110 8945B4",
+        "index": 0
+    },
+    {
+        "name":"O_CALL_UploadPic",
+        "type":"rva",
+        "pattern":"55 8BEC 6AFF 68.{8} 64A100000000 50 83EC1C A1.{8} 33C5 8945F0 53 56 57 50 8D45F4 64A300000000 8BF9 897DD8 8B450C 0F57C0 8B7508 8945E4 8D45E8 50 660F1345E8 E8.{8} 83C404 8B5DE8 8BCB 56 C745FC00000000 E8.{8} 8B4FF8 8D45DC 50 E8.{8}",
+        "index": 2
+    },
+    {
+        "name":"O_BP_UploadPicComplete",
+        "type":"rva",
+        "pattern":"FF5228 8D8D74FFFFFF C645FC01 E8.{8} 80BFA400000000 0F84.{8} 8BCF E8.{8} 8D4D98 51",
+        "index": 0
+    }
+]

@@ -165,7 +165,7 @@ void* CSearchBase::SearchString(void* addr, size_t range, const wchar_t* str)
 }
 
 // 字符串转二进制 
-size_t CSearchBase::BytesString2Bytes(const char* szbytes, unsigned char** bytes, unsigned char** masks)
+size_t CSearchBase::BytesString2Bytes(const char* szbytes, unsigned char** bytes, unsigned char** masks, unsigned int* offset)
 {
     if (szbytes == NULL || bytes == NULL || masks == NULL)
     {
@@ -249,11 +249,18 @@ size_t CSearchBase::BytesString2Bytes(const char* szbytes, unsigned char** bytes
                 ipos++;
             }
         }
+        else if (*pByte == '(')
+        {
+            if (offset)
+            {
+                *offset = ipos/2;
+            }
+        }
     }
     return ipos/2;
 }
 
-size_t CSearchBase::BytesString2Bytes(const wchar_t* szbytes, unsigned char** bytes, unsigned char** masks)
+size_t CSearchBase::BytesString2Bytes(const wchar_t* szbytes, unsigned char** bytes, unsigned char** masks, unsigned int* offset)
 {
     if (szbytes == NULL || bytes == NULL || masks == NULL)
     {
@@ -335,6 +342,13 @@ size_t CSearchBase::BytesString2Bytes(const wchar_t* szbytes, unsigned char** by
             else
             {
                 ipos++;
+            }
+        }
+        else if (*pByte == L'(')
+        {
+            if (offset)
+            {
+                *offset = ipos/2;
             }
         }
     }

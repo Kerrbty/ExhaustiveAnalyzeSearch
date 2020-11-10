@@ -25,6 +25,7 @@ struct {
     do_action action;
 }action_list[] = {
     {"search_byte", search_byte},
+    {"pattern", search_byte},
     {"search_string", search_string},
     {"compare_string", compare_string},
     {"read_addr", read_addr},
@@ -41,6 +42,8 @@ typedef struct _SearchObject
     char* data;    // 数据 
     bool bsearch_next;   // 是否搜索下一个 
     struct _SearchObject* continueobj;   // 搜索到一个对象以后，下一步处理 
+    int index;      // 第一个匹配值 
+    search_type ReadType;  // 是否需要读取某地址值 
     LIST_ENTRY next;   // 下一个搜索对象 
 }SearchObject, *PSearchObject;
 
@@ -85,7 +88,7 @@ PSearchObject AnalyzeSearchObject(Json::Value data)
         }
         else if (*string == "offset")
         {
-            if (data["offset"].asInt())
+            if (data["offset"].isInt())
             {
                 pSearchList->offset = data["offset"].asInt();
             }
@@ -93,6 +96,32 @@ PSearchObject AnalyzeSearchObject(Json::Value data)
         else if (*string == "continue")
         {
             pSearchList->continueobj = AnalyzeSearchObject(data["continue"]);
+        }
+        else if (*string == "type")
+        {
+            if (data["type"].isString())
+            {
+                const JSONCPP_STRING sztype = data["type"].asString();
+                if (sztype == "mem")
+                {
+                    pSearchList->ReadType = READ_ADDR;
+                }
+                else if (sztype == "rva")
+                {
+                    pSearchList->ReadType = REAL_ADDR;
+                }
+                else if (sztype == "call")
+                {
+                    pSearchList->ReadType = READ_OFFSET;
+                }
+            }
+        }
+        else if (*string == "index")
+        {
+            if (data["index"].isInt())
+            {
+                pSearchList->index = data["index"].asInt();
+            }
         }
         else
         {            
@@ -123,20 +152,22 @@ typedef struct
 {
     PSearchObject SearchElement;
     MemorySearch* memsearch;
+    const char* name;
+    int index;
     PGetFindData cb;
     void* userdata;
 }CbData, *PCbData;
 
-bool __stdcall FindObjectCallBack(void* addr, void* user_info)
+bool __stdcall FindObjectCallBack(void* addr, int index, void* user_info)
 {
     PCbData cbd = (PCbData)user_info;
 
     PSearchObject pCurSearch = cbd->SearchElement;
     if (pCurSearch == NULL)
     {
-        if (cbd->cb)
+        if (cbd->index == index && cbd->cb)
         {
-            cbd->cb(cbd->memsearch->GetRealAddr(addr), cbd->userdata);
+            cbd->cb(cbd->name, cbd->memsearch->GetRealAddr(addr), cbd->userdata);
             return false;
         }
     }
@@ -147,11 +178,13 @@ bool __stdcall FindObjectCallBack(void* addr, void* user_info)
         nextcbd.memsearch = cbd->memsearch;
         nextcbd.cb = cbd->cb;
         nextcbd.userdata = cbd->userdata;
+        nextcbd.name = cbd->name;
+        nextcbd.index = pCurSearch->index;
 
         switch (pCurSearch->action)
         {
         case search_byte:    // 搜索字符串 
-            cbd->memsearch->SearchTargetBytes(pCurSearch->data, FindObjectCallBack, &nextcbd);
+            cbd->memsearch->SearchTargetBytes(pCurSearch->data, pCurSearch->ReadType, FindObjectCallBack, &nextcbd);
             break;
         case search_string:
             cbd->memsearch->SearchTargetString(pCurSearch->data, FindObjectCallBack, &nextcbd);
@@ -159,46 +192,45 @@ bool __stdcall FindObjectCallBack(void* addr, void* user_info)
         case compare_string:
             if (cbd->memsearch->CompareStr(cbd->memsearch->ReadAddr((unsigned char*)addr+pCurSearch->offset), pCurSearch->data))
             {
-                FindObjectCallBack((unsigned char*)addr+pCurSearch->offset, &nextcbd);
+                FindObjectCallBack((unsigned char*)addr+pCurSearch->offset, 0, &nextcbd);
             }
             break;
         case read_addr: 
             {
                 void* nadr = cbd->memsearch->ReadAddr((unsigned char*)addr+pCurSearch->offset);
-                FindObjectCallBack(nadr, &nextcbd);
+                FindObjectCallBack(nadr, 0, &nextcbd);
             }
             break;
         case read_dword:
             {
                 void* nadr = cbd->memsearch->ReadDword((unsigned char*)addr+pCurSearch->offset);
-                FindObjectCallBack(nadr, &nextcbd);
+                FindObjectCallBack(nadr, 0, &nextcbd);
             }
             break;
         case read_qword:
             {
                 void* nadr = cbd->memsearch->ReadQword((unsigned char*)addr+pCurSearch->offset);
-                FindObjectCallBack(nadr, &nextcbd);
+                FindObjectCallBack(nadr, 0, &nextcbd);
             }
             break;
         case ret_addr:
-            FindObjectCallBack((unsigned char*)addr+pCurSearch->offset, &nextcbd);
+            FindObjectCallBack((unsigned char*)addr+pCurSearch->offset, 0, &nextcbd);
             break;
         }
     }
     return true;
 }
 
-static void SearchTargetObject(PSearchObject SearchElement, const wchar_t* filename, PGetFindData cb, void* userdata)
+static void SearchTargetObject(PSearchObject SearchElement, MemorySearch* memsearch, PGetFindData cb, void* userdata)
 {
-    MemorySearch memsearch(filename);
-
     CbData cbd;
     cbd.SearchElement = SearchElement;
-    cbd.memsearch = &memsearch;
+    cbd.memsearch = memsearch;
 
+    cbd.name = SearchElement->name;
     cbd.cb = cb;
     cbd.userdata = userdata;
-    FindObjectCallBack(NULL, &cbd);
+    FindObjectCallBack(NULL, 0, &cbd);
 }
 
 unsigned int SearchByJsonW(const wchar_t* JsonFile, const wchar_t* filename, PGetFindData cb, void* userdata)
@@ -249,10 +281,12 @@ unsigned int SearchByJsonW(const wchar_t* JsonFile, const wchar_t* filename, PGe
     DeleteHandle(hFile);
  
     // 根据 SearchList 去搜索数据 
+    MemorySearch memsearch(filename);
+    cb("DefaultBase", memsearch.GetBaseAddr(), userdata);
     for (PLIST_ENTRY li = SearchList.next.Flink; li != &SearchList.next; li = li->Flink)
     {
         PSearchObject obj = CONTAINING_RECORD(li, SearchObject, next);
-        SearchTargetObject(obj, filename, cb, userdata);
+        SearchTargetObject(obj, &memsearch, cb, userdata);
         search_count++;
     }
 

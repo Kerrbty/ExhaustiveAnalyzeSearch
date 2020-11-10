@@ -342,6 +342,14 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\PEVersionInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PEVersionInfo.h"
+				>
+			</File>
 			<Filter
 				Name="logger"
 				>

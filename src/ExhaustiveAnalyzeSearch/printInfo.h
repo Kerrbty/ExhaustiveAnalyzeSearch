@@ -12,12 +12,12 @@ int fprintDebugA(FILE *stream, const char *format, ...);
 int fprintDebugW(FILE *stream, const wchar_t *format, ...);
 
 
-#define printErrA(format, ...)  fprintErrA(stdout, format, __VA_ARGS__)
-#define printErrW(format, ...)  fprintErrW(stdout, format, __VA_ARGS__)
-#define printInfoA(format, ...)  fprintInfoA(stdout, format, __VA_ARGS__)
-#define printInfoW(format, ...)  fprintInfoW(stdout, format, __VA_ARGS__)
-#define printDebugA(format, ...)  fprintDebugA(stdout, format, __VA_ARGS__)
-#define printDebugW(format, ...)  fprintDebugW(stdout, format, __VA_ARGS__)
+#define printErrA(format, ...)  fprintErrA(stderr, format, __VA_ARGS__)
+#define printErrW(format, ...)  fprintErrW(stderr, format, __VA_ARGS__)
+#define printInfoA(format, ...)  fprintInfoA(stderr, format, __VA_ARGS__)
+#define printInfoW(format, ...)  fprintInfoW(stderr, format, __VA_ARGS__)
+#define printDebugA(format, ...)  fprintDebugA(stderr, format, __VA_ARGS__)
+#define printDebugW(format, ...)  fprintDebugW(stderr, format, __VA_ARGS__)
 
 #ifdef _UNICODE
 #define fprintErr fprintErrW

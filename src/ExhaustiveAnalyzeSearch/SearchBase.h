@@ -1,7 +1,13 @@
 #ifndef _SEARCH_BASE_CALSS_HEADE_HH_H
 #define _SEARCH_BASE_CALSS_HEADE_HH_H
 
-typedef bool (__stdcall* PGetAddrSuccessCallBack)(void* addr, void* user_info);
+enum search_type{
+    REAL_ADDR,  // 原始地址 
+    READ_ADDR,  // 取相对位置的地址值 
+    READ_OFFSET,  // 相对该位置的偏移地址 
+};
+
+typedef bool (__stdcall* PGetAddrSuccessCallBack)(void* addr, int index, void* user_info);
 
 class CSearchBase{
 public:
@@ -16,7 +22,7 @@ public:
     void* SearchString(void* addr, size_t range, const char* str);
     void* SearchString(void* addr, size_t range, const wchar_t* str);
 
-    virtual unsigned int SearchTargetBytes(const char* szbytes, PGetAddrSuccessCallBack callback, void* user_args) = 0;
+    virtual unsigned int SearchTargetBytes(const char* szbytes, search_type readtype, PGetAddrSuccessCallBack callback, void* user_args) = 0;
     virtual unsigned int SearchTargetBytes(const unsigned char* szbytes, size_t len, PGetAddrSuccessCallBack callback, void* user_args) = 0;
     virtual unsigned int SearchTargetString(const char* str, PGetAddrSuccessCallBack callback, void* user_args) = 0;
     virtual unsigned int SearchTargetString(const wchar_t* str, PGetAddrSuccessCallBack callback, void* user_args) = 0;
@@ -46,8 +52,8 @@ protected:
     void SetSearchNext(bool search_continue) { m_search_next = search_continue; }
 
     // 只有该类内部使用，因为涉及到资源释放会引起内存泄漏 
-    size_t BytesString2Bytes(const char* szbytes, unsigned char** bytes, unsigned char** masks); // 字符串转二进制 
-    size_t BytesString2Bytes(const wchar_t* szbytes, unsigned char** bytes, unsigned char** masks); // 字符串转二进制 
+    size_t BytesString2Bytes(const char* szbytes, unsigned char** bytes, unsigned char** masks, unsigned int* offset = ((unsigned int *)0)); // 字符串转二进制 
+    size_t BytesString2Bytes(const wchar_t* szbytes, unsigned char** bytes, unsigned char** masks, unsigned int* offset = ((unsigned int *)0)); // 字符串转二进制 
     bool CompareChgResources(void* addr, size_t range, unsigned char* bytes, unsigned char* masks, size_t len);  // 利用转换的 m_chg_bytes/m_chg_flags进行内存比较 
     void FreeChgResources(unsigned char** bytes, unsigned char** masks); // 释放m_chg_bytes、m_chg_flags资源 
 
