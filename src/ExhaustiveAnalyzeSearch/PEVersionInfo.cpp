@@ -14,33 +14,32 @@ bool GetPEVersionW(const wchar_t* filename, unsigned long* dwVersionMS, unsigned
     bool GetVerSuccess = false;
     DWORD dwHandle;
     DWORD dwSize = GetFileVersionInfoSizeW(filename, &dwHandle);
+    if (dwSize<=0)
+    {
+        return GetVerSuccess;
+    }
+
     PWSTR pVersionData = (PWSTR)AllocMemory(dwSize*sizeof(WCHAR));
     if(GetFileVersionInfoW(filename, dwHandle, dwSize,(void**)pVersionData))  
     {
-        LPBYTE lpBuffer = NULL;
-        UINT   size = 0;
-        if (VerQueryValue(pVersionData, L"\\", (VOID FAR* FAR*)&lpBuffer, &size))
-        {
-            UINT dwQuerySize = 0;  
-            VS_FIXEDFILEINFO *pTransTable ;
-            if (VerQueryValueW(pVersionData, L"\\",(LPVOID*)&pTransTable, &dwQuerySize))  
-            {  
-                WORD WinMajor = HIWORD(pTransTable->dwProductVersionMS);//major version number    
-                WORD WinMinor = LOWORD(pTransTable->dwProductVersionMS); //minor version number
+        UINT dwQuerySize = 0;  
+        VS_FIXEDFILEINFO *pTransTable ;
+        if (VerQueryValueW(pVersionData, L"\\",(LPVOID*)&pTransTable, &dwQuerySize))  
+        {  
+            WORD WinMajor = HIWORD(pTransTable->dwProductVersionMS);//major version number    
+            WORD WinMinor = LOWORD(pTransTable->dwProductVersionMS); //minor version number
 
-                if (dwVersionMS != NULL)
-                {
-                    *dwVersionMS = pTransTable->dwProductVersionMS;
-                }
-                if (dwVersionLS != NULL)
-                {
-                    *dwVersionLS = pTransTable->dwProductVersionLS;
-                }
-                GetVerSuccess = TRUE;
-            }  
-        }
+            if (dwVersionMS != NULL)
+            {
+                *dwVersionMS = pTransTable->dwProductVersionMS;
+            }
+            if (dwVersionLS != NULL)
+            {
+                *dwVersionLS = pTransTable->dwProductVersionLS;
+            }
+            GetVerSuccess = TRUE;
+        } 
     }
     FreeMemory(pVersionData);
     return GetVerSuccess;
-    return true;
 }
